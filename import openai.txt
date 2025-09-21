@@ -1,0 +1,10 @@
+import openai
+
+openai.api_key = "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"
+
+user_prompt = "How do I fix a Python import error?"
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": user_prompt}]
+)
+print(response['choices'][0]['message']['content'])

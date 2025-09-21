@@ -87,20 +87,245 @@ export const ChatInterface = () => {
 
   const generateDetailedResponse = (question: string) => {
     const lower = question.toLowerCase();
-    
+
     if (lower.includes("python") || lower.includes("function")) {
-      return `**Python Functions** are reusable blocks of code that perform specific tasks:\n\n\`\`\`python\ndef greet(name, age=None):\n    if age:\n        return f"Hello {name}, you are {age} years old!"\n    return f"Hello {name}!"\n\n# Usage examples\nprint(greet("Alice"))  # Hello Alice!\nprint(greet("Bob", 25))  # Hello Bob, you are 25 years old!\n\`\`\`\n\n**Key concepts:**\n• **Parameters**: Input values (name, age)\n• **Default values**: age=None provides a fallback\n• **Return statement**: Outputs the result\n• **Scope**: Variables inside functions are local\n\nWould you like me to explain any specific aspect in more detail?`;
+      return `**Python Functions: Complete Guide**
+
+Functions are the building blocks of Python programming. Here's a comprehensive breakdown:
+
+\`\`\`python
+# Basic Function Definition
+def greet(name, age=None):
+    \"\"\"This function greets a person with optional age.\"\"\"
+    if age:
+        return f"Hello {name}, you are {age} years old!"
+    return f"Hello {name}!"
+
+# Advanced Function Examples
+def calculate_area(shape, *args, **kwargs):
+    \"\"\"Calculate area based on shape type.\"\"\"
+    if shape == "circle":
+        radius = args[0] if args else kwargs.get('radius', 0)
+        return 3.14159 * radius ** 2
+    elif shape == "rectangle":
+        length, width = args if len(args) >= 2 else (kwargs.get('length', 0), kwargs.get('width', 0))
+        return length * width
+    return 0
+
+# Lambda Functions (Anonymous Functions)
+square = lambda x: x ** 2
+numbers = [1, 2, 3, 4, 5]
+squared_numbers = list(map(square, numbers))
+
+# Higher-Order Functions
+def apply_operation(func, data):
+    \"\"\"Apply a function to each element in data.\"\"\"
+    return [func(item) for item in data]
+
+# Usage Examples
+print(greet("Alice"))                    # Hello Alice!
+print(greet("Bob", 25))                  # Hello Bob, you are 25 years old!
+print(calculate_area("circle", 5))       # 78.53975
+print(apply_operation(lambda x: x*2, [1,2,3]))  # [2, 4, 6]
+\`\`\`
+
+**Function Components:**
+• **Parameters**: Input values (positional or keyword arguments)
+• **Return Statement**: Output value(s) or None
+• **Docstrings**: Documentation strings for functions
+• **Scope**: Local vs Global variables
+• **Arguments**: *args (variable positional), **kwargs (variable keyword)
+
+**Advanced Concepts:**
+• **Decorators**: Functions that modify other functions
+• **Generators**: Functions that yield values one at a time
+• **Closures**: Inner functions with access to outer scope
+• **Recursion**: Functions that call themselves
+
+**Best Practices:**
+• Use descriptive function names
+• Include docstrings for documentation
+• Handle edge cases and errors
+• Use type hints for better code clarity
+• Keep functions focused on single responsibilities
+
+Would you like me to explain any specific aspect in more detail, such as decorators, generators, or error handling?`;
     }
     
     if (lower.includes("machine learning") || lower.includes("ml")) {
-      return `**Machine Learning** is a subset of AI that enables computers to learn from data:\n\n**Core Types:**\n• **Supervised Learning**: Learn from labeled examples (classification, regression)\n• **Unsupervised Learning**: Find patterns in unlabeled data (clustering, dimensionality reduction)\n• **Reinforcement Learning**: Learn through trial and error with rewards\n\n**Common Algorithms:**\n• Linear Regression, Decision Trees\n• Neural Networks, Support Vector Machines\n• K-Means Clustering, Random Forest\n\n**Typical Workflow:**\n1. Data Collection & Cleaning\n2. Feature Engineering\n3. Model Selection & Training\n4. Evaluation & Validation\n5. Deployment & Monitoring\n\nWhat specific aspect would you like to dive deeper into?`;
+      return `**Machine Learning** is a subset of AI that enables computers to learn from data:
+
+**Core Types:**
+• **Supervised Learning**: Learn from labeled examples (classification, regression)
+• **Unsupervised Learning**: Find patterns in unlabeled data (clustering, dimensionality reduction)
+• **Reinforcement Learning**: Learn through trial and error with rewards
+
+**Common Algorithms:**
+• Linear Regression, Decision Trees
+• Neural Networks, Support Vector Machines
+• K-Means Clustering, Random Forest
+
+**Typical Workflow:**
+1. Data Collection & Cleaning
+2. Feature Engineering
+3. Model Selection & Training
+4. Evaluation & Validation
+5. Deployment & Monitoring
+
+What specific aspect would you like to dive deeper into?`;
     }
     
     if (lower.includes("react")) {
-      return `**React** is a powerful JavaScript library for building user interfaces:\n\n\`\`\`jsx\nimport React, { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <h2>Count: {count}</h2>\n      <button onClick={() => setCount(count + 1)}>\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;\n\`\`\`\n\n**Key Concepts:**\n• **Components**: Reusable UI building blocks\n• **JSX**: JavaScript syntax extension for HTML-like code\n• **State**: Data that changes over time\n• **Props**: Data passed between components\n• **Hooks**: Functions that let you use state and lifecycle features\n\n**Benefits:**\n• Virtual DOM for performance\n• Component-based architecture\n• Large ecosystem and community\n• Excellent developer tools\n\nNeed help with a specific React concept?`;
+      return `**React: Complete Development Guide**
+
+React is a powerful JavaScript library for building user interfaces, particularly web applications. Here's a comprehensive overview:
+
+**Core Concepts:**
+
+\`\`\`jsx
+import React, { useState, useEffect, useCallback } from 'react';
+
+// Functional Component with Hooks
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
+  // Effect Hook for side effects
+  useEffect(() => {
+    document.title = \`Todos: \${todos.length}\`;
+  }, [todos.length]);
+
+  // Custom Hook
+  const addTodo = useCallback(() => {
+    if (inputValue.trim()) {
+      setTodos(prev => [...prev, {
+        id: Date.now(),
+        text: inputValue,
+        completed: false
+      }]);
+      setInputValue('');
+    }
+  }, [inputValue]);
+
+  return (
+    <div className="todo-app">
+      <h1>My Todo List</h1>
+      <div className="input-section">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Add a new todo..."
+          onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+        />
+        <button onClick={addTodo}>Add Todo</button>
+      </div>
+      <ul className="todo-list">
+        {todos.map(todo => (
+          <li key={todo.id} className={todo.completed ? 'completed' : ''}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => toggleTodo(todo.id)}
+            />
+            <span>{todo.text}</span>
+            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Class Component (Legacy approach)
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  increment = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  render() {
+    return (
+      <div>
+        <h2>Count: {this.state.count}</h2>
+        <button onClick={this.increment}>Increment</button>
+      </div>
+    );
+  }
+}
+\`\`\`
+
+**React Hooks (Modern Approach):**
+
+• **useState**: Manage component state
+• **useEffect**: Handle side effects (API calls, subscriptions)
+• **useContext**: Access context values
+• **useReducer**: Complex state management
+• **useCallback**: Memoize functions
+• **useMemo**: Memoize expensive calculations
+• **useRef**: Access DOM elements directly
+
+**Component Lifecycle:**
+
+1. **Mounting**: Component is created and inserted into DOM
+2. **Updating**: Component re-renders due to state/props changes
+3. **Unmounting**: Component is removed from DOM
+
+**Advanced Patterns:**
+
+• **Higher-Order Components (HOC)**: Functions that take components and return enhanced components
+• **Render Props**: Pattern for sharing code between components
+• **Compound Components**: Components that work together as a complete set
+• **Custom Hooks**: Reusable stateful logic
+
+**State Management:**
+
+• **Local State**: useState, useReducer
+• **Global State**: Context API, Redux, Zustand
+• **Server State**: React Query, SWR
+
+**Performance Optimization:**
+
+• **React.memo**: Prevent unnecessary re-renders
+• **useMemo**: Memoize expensive calculations
+• **useCallback**: Memoize function references
+• **Lazy Loading**: Code splitting with React.lazy()
+• **Virtualization**: Handle large lists efficiently
+
+**Best Practices:**
+
+• Use functional components with hooks
+• Keep components small and focused
+• Use TypeScript for better development experience
+• Implement proper error boundaries
+• Use React DevTools for debugging
+• Write tests with React Testing Library
+• Follow accessibility guidelines (ARIA)
+
+**Ecosystem:**
+
+• **Next.js**: Full-stack React framework
+• **Gatsby**: Static site generator
+• **React Native**: Mobile app development
+• **Material-UI**: Component library
+• **Ant Design**: Enterprise UI components
+
+Would you like me to dive deeper into any specific React concept, such as advanced hooks, state management, performance optimization, or help you with a specific implementation?`;
     }
     
-    return `That's a great topic! I'd be happy to provide more specific guidance. Could you share more details about what you'd like to learn or any specific challenges you're facing? I can provide:\n\n• Step-by-step explanations\n• Code examples and best practices\n• Debugging assistance\n• Project guidance\n• Resource recommendations\n\nFeel free to ask follow-up questions!`;
+    return `That's a great topic! I'd be happy to provide more specific guidance. Could you share more details about what you'd like to learn or any specific challenges you're facing? I can provide:
+
+• Step-by-step explanations
+• Code examples and best practices
+• Debugging assistance
+• Project guidance
+• Resource recommendations
+
+Feel free to ask follow-up questions!`;
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

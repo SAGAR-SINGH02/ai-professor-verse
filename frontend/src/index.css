@@ -1,0 +1,430 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AI Professor Verse - 3D EdTech Platform Design System */
+
+@layer base {
+  :root {
+    /* Core Background & Text */
+    --background: 220 20% 97%;
+    --foreground: 222 84% 5%;
+
+    /* Cards & Surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 222 84% 5%;
+
+    /* Popover Elements */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 84% 5%;
+
+    /* AI-Tech Primary Brand */
+    --primary: 231 48% 48%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 231 48% 65%;
+
+    /* Secondary Tech Accent */
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 0 0% 98%;
+
+    /* Muted Educational Tones */
+    --muted: 220 13% 91%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Interactive Accent */
+    --accent: 188 94% 43%;
+    --accent-foreground: 0 0% 98%;
+
+    /* Alert Colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Inputs */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 231 48% 48%;
+
+    --radius: 0.75rem;
+
+    /* AI Neural Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(231 48% 48%), hsl(269 61% 56%));
+    --gradient-neural: linear-gradient(45deg, hsl(231 48% 48%) 0%, hsl(188 94% 43%) 50%, hsl(269 61% 56%) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(231 48% 65%), hsl(188 94% 60%));
+    --gradient-mesh: radial-gradient(ellipse at top, hsl(231 48% 48% / 0.3), transparent 50%),
+                     radial-gradient(ellipse at bottom, hsl(188 94% 43% / 0.2), transparent 50%);
+
+    /* Advanced Shadows */
+    --shadow-ai: 0 8px 32px -12px hsl(231 48% 48% / 0.3);
+    --shadow-glow: 0 0 40px hsl(188 94% 43% / 0.4);
+    --shadow-neural: 0 4px 20px -8px hsl(269 61% 56% / 0.25);
+    --shadow-glass: 0 8px 32px rgba(0 0% 0% / 0.1);
+    --shadow-floating: 0 20px 40px -12px hsl(231 48% 48% / 0.15);
+
+    /* Animation Timing */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-elastic: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Glass Morphism */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+
+    /* Professor Avatar Colors */
+    --professor-primary: 220 70% 50%;
+    --professor-glow: 200 100% 70%;
+    --avatar-highlight: 280 100% 70%;
+    --emotion-happy: 120 70% 50%;
+    --emotion-neutral: 200 50% 50%;
+    --emotion-focused: 280 70% 50%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 40% 98%), hsl(217 91% 60%));
+    --gradient-neural: linear-gradient(45deg, hsl(210 40% 98%) 0%, hsl(217 91% 60%) 50%, hsl(269 61% 56%) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(217 91% 60%), hsl(269 61% 56%));
+
+    /* Dark glass morphism */
+    --glass-bg: rgba(0, 0, 0, 0.3);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image: var(--gradient-mesh);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* Enhanced scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+
+  /* WebRTC Video Elements */
+  video {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Canvas for 3D rendering */
+  canvas {
+    border-radius: var(--radius);
+  }
+}
+
+@layer utilities {
+  /* AI Professor Verse Utility Classes */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-neural {
+    background: var(--gradient-neural);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .gradient-glow {
+    background: var(--gradient-glow);
+  }
+
+  .gradient-mesh {
+    background: var(--gradient-mesh);
+  }
+
+  .shadow-ai {
+    box-shadow: var(--shadow-ai);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-neural {
+    box-shadow: var(--shadow-neural);
+  }
+
+  .shadow-glass {
+    box-shadow: var(--shadow-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+  }
+
+  .shadow-floating {
+    box-shadow: var(--shadow-floating);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  .transition-elastic {
+    transition: var(--transition-elastic);
+  }
+
+  /* Glass Morphism Effects */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Professor Avatar Animations */
+  @keyframes avatar-float {
+    0%, 100% { transform: translateY(0px) rotateY(0deg); }
+    33% { transform: translateY(-8px) rotateY(2deg); }
+    66% { transform: translateY(4px) rotateY(-2deg); }
+  }
+
+  .avatar-float {
+    animation: avatar-float 4s ease-in-out infinite;
+  }
+
+  @keyframes emotion-pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .emotion-pulse {
+    animation: emotion-pulse 2s ease-in-out infinite;
+  }
+
+  /* Neural Network Animation */
+  @keyframes neural-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .neural-pulse {
+    animation: neural-pulse 2s ease-in-out infinite;
+  }
+
+  /* WebRTC Connection Status */
+  @keyframes connection-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--emotion-happy) / 0.7); }
+    70% { box-shadow: 0 0 0 10px hsl(var(--emotion-happy) / 0); }
+  }
+
+  .connection-pulse {
+    animation: connection-pulse 2s infinite;
+  }
+
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+  }
+
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Glow Effects */
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.3);
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.4);
+  }
+
+  .glow-neural {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--accent) / 0.2);
+  }
+
+  .glow-professor {
+    box-shadow: 0 0 30px hsl(var(--professor-glow) / 0.4);
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    transition: var(--transition-smooth);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-floating);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.4);
+  }
+
+  .hover-scale {
+    transition: var(--transition-smooth);
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  /* Text Effects */
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  }
+
+  .text-professor-glow {
+    text-shadow: 0 0 15px hsl(var(--professor-glow) / 0.6);
+  }
+
+  /* Shimmer Animation */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Pulse Glow Animation */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+    50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--accent) / 0.4); }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  /* 3D Transform Effects */
+  .transform-3d { 
+    transform-style: preserve-3d; 
+    perspective: 1000px; 
+  }
+  
+  .rotate-x { transform: rotateX(15deg); }
+  .rotate-y { transform: rotateY(-15deg); }
+
+  /* Skeleton Loading */
+  @keyframes skeleton {
+    0% { background-position: -200px 0; }
+    100% { background-position: calc(200px + 100%) 0; }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
+    background-size: 200% 100%;
+    animation: skeleton 1.5s infinite;
+  }
+
+  /* Accessibility Focus Ring */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  }
+
+  /* Responsive Text Scaling */
+  .text-responsive { font-size: clamp(1rem, 4vw, 2rem); }
+  .text-responsive-lg { font-size: clamp(1.5rem, 6vw, 3rem); }
+  .text-responsive-xl { font-size: clamp(2rem, 8vw, 4rem); }
+
+  /* WebRTC Video Styles */
+  .video-container {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-glass);
+  }
+
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, hsl(var(--primary) / 0.1) 70%);
+    pointer-events: none;
+  }
+
+  /* 3D Scene Styles */
+  .scene-container {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, hsl(var(--background)), hsl(var(--muted)));
+  }
+}

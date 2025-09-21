@@ -1,0 +1,167 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime-service
+  namespace: ai-professor-verse
+  labels:
+    app: realtime-service
+    component: realtime
+    version: v1
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: realtime-service
+  template:
+    metadata:
+      labels:
+        app: realtime-service
+        component: realtime
+        version: v1
+    spec:
+      containers:
+      - name: realtime-service
+        image: ai-professor/realtime-service:latest
+        ports:
+        - containerPort: 3003
+          name: http
+        - containerPort: 3004
+          name: websocket
+        env:
+        - name: PORT
+          value: "3003"
+        - name: WEBSOCKET_PORT
+          value: "3004"
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: ai-professor-config
+              key: NODE_ENV
+        envFrom:
+        - configMapRef:
+            name: ai-professor-config
+        - secretRef:
+            name: ai-professor-secrets
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "750m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: logs
+          mountPath: /app/logs
+      volumes:
+      - name: logs
+        emptyDir: {}
+      imagePullSecrets:
+      - name: docker-registry-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: realtime-service
+  namespace: ai-professor-verse
+  labels:
+    app: realtime-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3003
+    protocol: TCP
+    name: http
+  - port: 3004
+    targetPort: 3004
+    protocol: TCP
+    name: websocket
+  selector:
+    app: realtime-service
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: realtime-service-ingress
+  namespace: ai-professor-verse
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/websocket-services: "realtime-service"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$remote_addr"
+spec:
+  tls:
+  - hosts:
+    - realtime.ai-professor-verse.com
+    secretName: ai-professor-tls
+  rules:
+  - host: realtime.ai-professor-verse.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: realtime-service
+            port:
+              number: 80
+      - path: /socket.io/
+        pathType: Prefix
+        backend:
+          service:
+            name: realtime-service
+            port:
+              number: 3004
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: realtime-service-hpa
+  namespace: ai-professor-verse
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: realtime-service
+  minReplicas: 3
+  maxReplicas: 12
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-service
+  namespace: ai-professor-verse
+  labels:
+    app: ai-service
+    component: ai
+    version: v1
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: ai-service
+  template:
+    metadata:
+      labels:
+        app: ai-service
+        component: ai
+        version: v1
+    spec:
+      containers:
+      - name: ai-service
+        image: ai-professor/ai-service:latest
+        ports:
+        - containerPort: 3002
+          name: http
+        env:
+        - name: PORT
+          value: "3002"
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: ai-professor-config
+              key: NODE_ENV
+        envFrom:
+        - configMapRef:
+            name: ai-professor-config
+        - secretRef:
+            name: ai-professor-secrets
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - name: ai-models
+          mountPath: /app/models
+        - name: logs
+          mountPath: /app/logs
+      volumes:
+      - name: ai-models
+        persistentVolumeClaim:
+          claimName: ai-models-pvc
+      - name: logs
+        emptyDir: {}
+      imagePullSecrets:
+      - name: docker-registry-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+  namespace: ai-professor-verse
+  labels:
+    app: ai-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3002
+    protocol: TCP
+    name: http
+  selector:
+    app: ai-service
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-models-pvc
+  namespace: ai-professor-verse
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ai-service-hpa
+  namespace: ai-professor-verse
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ai-service
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 85
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60

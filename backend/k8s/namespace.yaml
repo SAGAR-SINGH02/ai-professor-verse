@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-professor-verse
+  labels:
+    name: ai-professor-verse
+    environment: production
+    app: ai-professor-backend
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-professor-verse-staging
+  labels:
+    name: ai-professor-verse-staging
+    environment: staging
+    app: ai-professor-backend

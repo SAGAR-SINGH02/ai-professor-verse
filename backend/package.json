@@ -1,0 +1,83 @@
+{
+  "name": "ai-professor-verse-backend",
+  "version": "1.0.0",
+  "description": "Scalable backend system for AI-powered 3D EdTech platform",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "start": "npm run start --workspaces",
+    "dev": "npm run dev --workspaces",
+    "dev:all": "concurrently \"npm run dev:gateway\" \"npm run dev:auth\" \"npm run dev:ai\" \"npm run dev:realtime\" \"npm run dev:user\" \"npm run dev:analytics\"",
+    "dev:gateway": "npm run dev --workspace=api-gateway",
+    "dev:auth": "npm run dev --workspace=auth-service",
+    "dev:user": "npm run dev --workspace=user-service",
+    "dev:ai": "npm run dev --workspace=ai-service",
+    "dev:realtime": "npm run dev --workspace=realtime-service",
+    "dev:code": "npm run dev --workspace=code-execution-service",
+    "dev:analytics": "npm run dev --workspace=analytics-service",
+    "dev:content": "npm run dev --workspace=content-service",
+    "dev:notification": "npm run dev --workspace=notification-service",
+    "test": "npm run test --workspaces",
+    "test:e2e": "npm run test:e2e --workspaces",
+    "lint": "npm run lint --workspaces",
+    "migrate:up": "npm run migrate:up --workspace=shared",
+    "migrate:down": "npm run migrate:down --workspace=shared",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "k8s:deploy": "kubectl apply -f k8s/",
+    "k8s:delete": "kubectl delete -f k8s/"
+  },
+  "workspaces": [
+    "shared",
+    "api-gateway",
+    "auth-service",
+    "user-service",
+    "ai-service",
+    "realtime-service",
+    "code-execution-service",
+    "analytics-service",
+    "content-service",
+    "notification-service",
+    "config-service",
+    "monitoring-service",
+    "file-storage-service"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "keywords": [
+    "ai",
+    "education",
+    "3d",
+    "microservices",
+    "nestjs",
+    "typescript",
+    "edtech",
+    "professor",
+    "avatar"
+  ],
+  "author": "AI Professor Verse Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/ai-professor-verse"
+  }
+}

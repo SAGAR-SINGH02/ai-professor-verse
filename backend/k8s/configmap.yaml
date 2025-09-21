@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-professor-config
+  namespace: ai-professor-verse
+data:
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "json"
+  
+  # Database Configuration
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "ai_professor_db"
+  MONGODB_URI: "mongodb://mongodb-service:27017/content_db"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  NEO4J_URI: "bolt://neo4j-service:7687"
+  
+  # Message Queue
+  KAFKA_BROKERS: "kafka-service:9092"
+  RABBITMQ_URL: "amqp://rabbitmq-service:5672"
+  
+  # External Services
+  FRONTEND_URL: "https://ai-professor-verse.com"
+  CORS_ORIGINS: "https://ai-professor-verse.com,https://app.ai-professor-verse.com"
+  
+  # JWT Configuration
+  JWT_EXPIRES_IN: "1h"
+  JWT_REFRESH_EXPIRES_IN: "7d"
+  JWT_ISSUER: "ai-professor-verse"
+  JWT_AUDIENCE: "ai-professor-users"
+  
+  # AI Configuration
+  OPENAI_MODEL: "gpt-4-turbo-preview"
+  OPENAI_MAX_TOKENS: "2000"
+  OPENAI_TEMPERATURE: "0.7"
+  
+  # Rate Limiting
+  RATE_LIMIT_TTL: "60"
+  RATE_LIMIT_MAX: "100"
+  RATE_LIMIT_MAX_AUTHENTICATED: "1000"
+  
+  # File Storage
+  AWS_REGION: "us-east-1"
+  AWS_S3_BUCKET: "ai-professor-storage"
+  
+  # Monitoring
+  PROMETHEUS_ENABLED: "true"
+  LOG_FILE_ENABLED: "false"
+  
+  # Security
+  CORS_ENABLED: "true"
+  HELMET_ENABLED: "true"
+  CSP_ENABLED: "true"
+  HSTS_ENABLED: "true"
+  
+  # Health Checks
+  HEALTH_CHECK_ENABLED: "true"
+  HEALTH_CHECK_INTERVAL: "30000"
+  HEALTH_CHECK_TIMEOUT: "5000"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-professor-config-staging
+  namespace: ai-professor-verse-staging
+data:
+  NODE_ENV: "staging"
+  LOG_LEVEL: "debug"
+  LOG_FORMAT: "json"
+  
+  # Database Configuration
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "ai_professor_staging_db"
+  MONGODB_URI: "mongodb://mongodb-service:27017/content_staging_db"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  NEO4J_URI: "bolt://neo4j-service:7687"
+  
+  # Message Queue
+  KAFKA_BROKERS: "kafka-service:9092"
+  RABBITMQ_URL: "amqp://rabbitmq-service:5672"
+  
+  # External Services
+  FRONTEND_URL: "https://staging.ai-professor-verse.com"
+  CORS_ORIGINS: "https://staging.ai-professor-verse.com"
+  
+  # JWT Configuration
+  JWT_EXPIRES_IN: "1h"
+  JWT_REFRESH_EXPIRES_IN: "7d"
+  JWT_ISSUER: "ai-professor-verse-staging"
+  JWT_AUDIENCE: "ai-professor-users-staging"
+  
+  # AI Configuration
+  OPENAI_MODEL: "gpt-3.5-turbo"
+  OPENAI_MAX_TOKENS: "1500"
+  OPENAI_TEMPERATURE: "0.7"
+  
+  # Rate Limiting (more lenient for testing)
+  RATE_LIMIT_TTL: "60"
+  RATE_LIMIT_MAX: "200"
+  RATE_LIMIT_MAX_AUTHENTICATED: "2000"
+  
+  # File Storage
+  AWS_REGION: "us-east-1"
+  AWS_S3_BUCKET: "ai-professor-storage-staging"
+  
+  # Monitoring
+  PROMETHEUS_ENABLED: "true"
+  LOG_FILE_ENABLED: "false"
+  
+  # Security (less strict for staging)
+  CORS_ENABLED: "true"
+  HELMET_ENABLED: "true"
+  CSP_ENABLED: "false"
+  HSTS_ENABLED: "false"
+  
+  # Health Checks
+  HEALTH_CHECK_ENABLED: "true"
+  HEALTH_CHECK_INTERVAL: "30000"
+  HEALTH_CHECK_TIMEOUT: "5000"

@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Brain, Code, BookOpen, Users, Play, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import aiProfessorHero from "@/assets/ai-professor-hero.jpg";
 
 export const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const navigate = useNavigate();
   
   const animatedWords = ["AI Professor", "Personal Tutor", "Learning Partner", "Code Mentor"];
 
@@ -15,7 +17,7 @@ export const HeroSection = () => {
       setCurrentWord((prev) => (prev + 1) % animatedWords.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [animatedWords.length]);
 
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
@@ -69,19 +71,20 @@ export const HeroSection = () => {
                 variant="hero" 
                 size="lg" 
                 className="group min-w-[180px]"
-                onClick={() => scrollToSection('courses')}
+                onClick={() => navigate('/ai-professor')}
               >
-                Start Learning
+                <Brain className="w-5 h-5 mr-2" />
+                Meet AI Professor
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="group min-w-[150px]"
-                onClick={() => setIsVideoPlaying(true)}
+                onClick={() => scrollToSection('courses')}
               >
-                <Play className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                Watch Demo
+                <BookOpen className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                Browse Courses
               </Button>
             </div>
 

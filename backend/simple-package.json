@@ -1,0 +1,18 @@
+{
+  "name": "ai-professor-simple-backend",
+  "version": "1.0.0",
+  "description": "Simple backend server for AI Professor Verse development",
+  "main": "simple-server.js",
+  "scripts": {
+    "start": "node simple-server.js",
+    "dev": "node simple-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

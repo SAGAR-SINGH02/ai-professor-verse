@@ -1,0 +1,44 @@
+<!-- Example HTML for responsive buttons -->
+<div class="button-container">
+  <button class="btn">Sign In</button>
+  <button class="btn primary">Get Started</button>
+</div>
+
+<style>
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.primary {
+  background: #0078d4;
+  color: #fff;
+}
+
+.btn:hover {
+  background: #ccc;
+}
+
+@media (max-width: 600px) {
+  .button-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+</style>

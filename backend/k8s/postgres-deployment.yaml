@@ -1,0 +1,161 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: ai-professor-verse
+  labels:
+    app: postgres
+    component: database
+spec:
+  serviceName: postgres-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        component: database
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: ai-professor-config
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ai-professor-secrets
+              key: POSTGRES_PASSWORD
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        - name: postgres-init
+          mountPath: /docker-entrypoint-initdb.d
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: postgres-init
+        configMap:
+          name: postgres-init-scripts
+          defaultMode: 0755
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: fast-ssd
+      resources:
+        requests:
+          storage: 50Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: ai-professor-verse
+  labels:
+    app: postgres
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5432
+    targetPort: 5432
+    protocol: TCP
+    name: postgres
+  selector:
+    app: postgres
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+  namespace: ai-professor-verse
+data:
+  init-databases.sh: |
+    #!/bin/bash
+    set -e
+
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+        -- Create databases for different services
+        CREATE DATABASE auth_db;
+        CREATE DATABASE user_db;
+        CREATE DATABASE analytics_db;
+        CREATE DATABASE content_db;
+        CREATE DATABASE keycloak_db;
+        
+        -- Create users for different services
+        CREATE USER auth_service WITH ENCRYPTED PASSWORD 'auth_service_password';
+        CREATE USER user_service WITH ENCRYPTED PASSWORD 'user_service_password';
+        CREATE USER analytics_service WITH ENCRYPTED PASSWORD 'analytics_service_password';
+        CREATE USER content_service WITH ENCRYPTED PASSWORD 'content_service_password';
+        
+        -- Grant privileges
+        GRANT ALL PRIVILEGES ON DATABASE auth_db TO auth_service;
+        GRANT ALL PRIVILEGES ON DATABASE user_db TO user_service;
+        GRANT ALL PRIVILEGES ON DATABASE analytics_db TO analytics_service;
+        GRANT ALL PRIVILEGES ON DATABASE content_db TO content_service;
+        GRANT ALL PRIVILEGES ON DATABASE keycloak_db TO "$POSTGRES_USER";
+        
+        -- Create extensions
+        \c auth_db;
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+        
+        \c user_db;
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+        
+        \c analytics_db;
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+        CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+        
+        \c content_db;
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+        
+        \c keycloak_db;
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    EOSQL
+
+    echo "✅ All databases initialized successfully!"
